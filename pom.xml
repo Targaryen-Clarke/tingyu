@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <!--当前父项目拥有的子模块-->
+    <groupId>com.cwt</groupId>
+    <artifactId>ssm-parent</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>ssm-pojo</module>
+        <module>ssm-mapper</module>
+        <module>ssm-service</module>
+        <module>ssm-web</module>
+    </modules>
+    <!--
+          1, 配置公共依赖
+              父项目中配置的公共依赖可以自动传递给子模块，子模块可以直接使用
+                如： junit，Spring
+          2， 统一配置各个依赖的版本
+          3， 控制子模块中依赖的版本,父项目锁定版本，但不引入依赖，子项目中再引入依赖，但是使用版本是父项目锁定的版本
+          4, 引入一些公共插件
+      -->
+
+    <!--配置属性，一般版本统一控制都在此处完成
+        自定义版本控制规则
+        <xxx框架.version>版本号</xxx框架.version>
+        在依赖中使用的时候 ： ${xxx框架.version}
+        如：MyBatis
+            <mybatis.version>3.4.6</mybatis.version>
+           Spring
+           <spring.version>5.2.9.RELEASE</spring.version>
+    -->
+    <properties>
+        <spring.version>5.2.5.RELEASE</spring.version>
+        <mybatis.version>3.4.6</mybatis.version>
+        <druid.version>1.1.22</druid.version>
+        <mysql-connector-java.version>5.1.49</mysql-connector-java.version>
+        <mybatis-spring.version>1.3.2</mybatis-spring.version>
+        <aspectjweaver.version>1.9.5</aspectjweaver.version>
+        <jackson.version>2.11.2</jackson.version>
+    </properties>
+
+
+    <!--控制子模块中依赖的版本
+        dependencyManagement ：只会锁定对应依赖的版本，但是不会引入依赖
+    -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/com.alibaba/druid -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql-connector-java.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis-spring</artifactId>
+                <version>${mybatis-spring.version}</version>
+            </dependency>
+
+        </dependencies>
+
+    </dependencyManagement>
+
+<!--    配置公共依赖-->
+    <dependencies>
+        <!--junit 依赖-->
+        <!-- https://mvnrepository.com/artifact/junit/junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-tx -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <!--spring-test测试依赖-->
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-test -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!--引入jackson-->
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <!--切面织入依赖-->
+        <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectjweaver.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+
+
+    </dependencies>
+
+<!--    构建项目-->
+<build>
+<!--    配置插件-->
+    <plugins>
+<!--        配置构建确认插件-->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.22.2</version>
+            <configuration>
+                <!--略过安装打包时执行单元测试-->
+                <skipTests>true</skipTests>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+</project>
